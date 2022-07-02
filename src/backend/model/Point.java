@@ -1,8 +1,10 @@
 package backend.model;
 
-public class Point {
+import backend.model.Movable;
 
-    public double x, y;
+public class Point implements Movable {
+
+    private double x, y;
 
     public Point(double x, double y) {
         this.x = x;
@@ -22,4 +24,9 @@ public class Point {
         return String.format("{%.2f , %.2f}", x, y);
     }
 
+    @Override
+    public void move(double dx, double dy) {
+        x += dx;
+        y += dy;
+    }
 }

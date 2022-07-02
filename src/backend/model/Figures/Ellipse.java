@@ -1,9 +1,13 @@
-package backend.model;
+package backend.model.Figures;
 
-public class Ellipse implements Figure {
+import backend.model.Figure;
+import backend.model.Point;
+import javafx.scene.canvas.GraphicsContext;
+
+public abstract class Ellipse implements Figure {
 
     protected final Point centerPoint;
-    protected final double sMayorAxis, sMinorAxis;
+    protected double sMayorAxis, sMinorAxis;
 
     public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis) {
         this.centerPoint = centerPoint;
@@ -28,4 +32,14 @@ public class Ellipse implements Figure {
         return sMinorAxis;
     }
 
+    @Override
+    public boolean pointBelongs(Point eventPoint) {
+        return ((Math.pow(eventPoint.getX() - centerPoint.getX(), 2) / Math.pow(sMayorAxis, 2)) +
+                (Math.pow(eventPoint.getY() - centerPoint.getY(), 2) / Math.pow(sMinorAxis, 2))) <= 0.30;
+    }
+
+    @Override
+    public void move(double dx, double dy) {
+        centerPoint.move(dx, dy);
+    }
 }
