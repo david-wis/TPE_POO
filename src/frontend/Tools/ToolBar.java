@@ -23,7 +23,8 @@ import java.util.function.BiFunction;
 public class ToolBar {
     private final ToggleButton selectionButton;
     private final ToggleButton deleteButton;
-
+    private final ToggleButton enlargeButton;
+    private final ToggleButton shrinkButton;
     private final VBox buttonsBox;
     private final ToggleGroup tools;
 
@@ -32,6 +33,8 @@ public class ToolBar {
     public ToolBar(GraphicsContext gc) {
         selectionButton = new ToggleButton("Seleccionar");
         deleteButton = new ToggleButton("Borrar");
+        enlargeButton = new ToggleButton("Agrandar");
+        shrinkButton = new ToggleButton("Achicar");
 
         ToggleButton rectangleButton = new ToggleButton("Rectángulo"),
                     squareButton = new ToggleButton("Cuadrado"),
@@ -53,7 +56,7 @@ public class ToolBar {
                 }
         );
 
-        ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton};
+        ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, enlargeButton, shrinkButton};
 
         tools = new ToggleGroup();
         for (ToggleButton tool : toolsArr) {
@@ -69,11 +72,21 @@ public class ToolBar {
     }
 
     public Optional<Figure> getSelectedFigure(Point startPoint, Point endPoint) {
-        return Optional.ofNullable(creatorMap.getOrDefault(tools.getSelectedToggle(), (sp, ep) -> null).apply(startPoint, endPoint));
+        if (tools.getSelectedToggle() != null)
+            return Optional.ofNullable(creatorMap.getOrDefault(tools.getSelectedToggle(), (sp, ep) -> null).apply(startPoint, endPoint));
+        return Optional.empty();
     }
 
     public VBox getButtonsBox() {
         return buttonsBox;
+    }
+
+    public void addShrinkButtonHandler(EventHandler<ActionEvent> handler) {
+        shrinkButton.setOnAction(handler);
+    }
+
+    public void addEnlargeButtonHandler(EventHandler<ActionEvent> handler) {
+        enlargeButton.setOnAction(handler);
     }
 
     public void addDeleteButtonHandler(EventHandler<ActionEvent> handler) {
@@ -83,4 +96,6 @@ public class ToolBar {
     public boolean isSelecting() {
         return selectionButton.isSelected();
     }
+
+
 }

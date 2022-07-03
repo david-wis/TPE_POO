@@ -2,17 +2,10 @@ package frontend;
 
 import backend.CanvasState;
 import backend.model.*;
-import backend.model.Figures.*;
-import frontend.FxFigures.*;
 import frontend.Tools.ToolBar;
-import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class PaintPane extends BorderPane {
@@ -113,6 +106,20 @@ public class PaintPane extends BorderPane {
 			if (selectedFigure != null) {
 				canvasState.deleteFigure(selectedFigure);
 				selectedFigure = null;
+				redrawCanvas();
+			}
+		});
+
+		tb.addEnlargeButtonHandler(event -> {
+			if (selectedFigure != null) {
+				selectedFigure.enlarge();
+				redrawCanvas();
+			}
+		});
+
+		tb.addShrinkButtonHandler(event -> {
+			if (selectedFigure != null) {
+				selectedFigure.shrink();
 				redrawCanvas();
 			}
 		});

@@ -22,4 +22,5 @@ public abstract class Circle extends Ellipse {
         return Math.sqrt(Math.pow(centerPoint.getX() - eventPoint.getX(), 2) +
                 Math.pow(centerPoint.getY() - eventPoint.getY(), 2)) < getRadius();
     }
+
 }

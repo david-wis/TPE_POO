@@ -42,4 +42,10 @@ public abstract class Ellipse implements Figure {
     public void move(double dx, double dy) {
         centerPoint.move(dx, dy);
     }
+
+    @Override
+    public void resize(double percentage) {
+        sMayorAxis *= (1 + percentage/100);
+        sMinorAxis *= (1 + percentage/100);
+    }
 }
