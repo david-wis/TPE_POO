@@ -4,9 +4,9 @@ import backend.CanvasState;
 import backend.model.*;
 import frontend.Tools.ToolBar;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
+
+import java.util.Optional;
 
 public class PaintPane extends BorderPane {
 
@@ -17,15 +17,14 @@ public class PaintPane extends BorderPane {
 
 	// Canvas y relacionados
 	Canvas canvas = new Canvas(800, 600);
-	GraphicsContext gc = canvas.getGraphicsContext2D();
-	Color lineColor = Color.BLACK;
-	Color fillColor = Color.YELLOW;
+
+	GraphicsController gc = new GraphicsController(canvas.getGraphicsContext2D());
 
 	// Dibujar una figura
 	Point startPoint;
 
 	// Seleccionar una figura
-	Figure selectedFigure;
+	private ColoredFigure selectedFigure;
 
 	// StatusBar
 	StatusPane statusPane;
@@ -33,8 +32,7 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
-		ToolBar tb = new ToolBar(gc);
-		gc.setLineWidth(1);
+		ToolBar tb = new ToolBar(gc, this);
 
 		canvas.setOnMousePressed(event -> startPoint = new Point(event.getX(), event.getY()));
 
@@ -56,7 +54,6 @@ public class PaintPane extends BorderPane {
 			boolean found = false;
 			StringBuilder label = new StringBuilder();
 			for(Figure figure : canvasState.figures()) {
-				System.out.println(canvasState.figures());
 				if(figure.pointBelongs(eventPoint)) {
 					found = true;
 					label.append(figure);
@@ -74,7 +71,7 @@ public class PaintPane extends BorderPane {
 				Point eventPoint = new Point(event.getX(), event.getY());
 				boolean found = false;
 				StringBuilder label = new StringBuilder("Se seleccionó: ");
-				for (Figure figure : canvasState.figures()) {
+				for (ColoredFigure figure : canvasState.figures()) {
 					if(figure.pointBelongs(eventPoint)) {
 						found = true;
 						selectedFigure = figure;
@@ -124,20 +121,25 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-		setLeft(tb.getButtonsBox());
+		tb.addStrokeSliderHandler((observable, oldValue, newValue) -> {
+			if (selectedFigure != null) {
+				selectedFigure.setStrokeWeight(newValue.doubleValue());
+				redrawCanvas();
+			}
+		});
+
+		setLeft(tb.getToolBox());
 		setRight(canvas);
 	}
 
-	void redrawCanvas() {
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+	public Optional<ColoredFigure> getSelectedFigure() {
+		return Optional.ofNullable(selectedFigure);
+	}
+
+	public void redrawCanvas() {
+		gc.clear(canvas.getWidth(), canvas.getHeight());
 		for(Figure figure : canvasState.figures()) {
-			if(figure == selectedFigure) {
-				gc.setStroke(Color.RED);
-			} else {
-				gc.setStroke(lineColor);
-			}
-			gc.setFill(fillColor);
-			figure.draw();
+			figure.draw(figure == selectedFigure);
 		}
 	}
 }

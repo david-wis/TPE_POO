@@ -21,5 +21,4 @@ public class AppLauncher extends Application {
 		primaryStage.show();
 		primaryStage.setOnCloseRequest(event -> System.exit(0));
 	}
-
 }

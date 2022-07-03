@@ -2,17 +2,18 @@ package frontend.FxFigures;
 
 import backend.model.Figures.Ellipse;
 import backend.model.Point;
+import frontend.GraphicsController;
 import javafx.scene.canvas.GraphicsContext;
 
 public class EllipseFx extends Ellipse {
-    private final GraphicsContext gc;
-    public EllipseFx(Point centerPoint, double sMayorAxis, double sMinorAxis, GraphicsContext gc) {
+
+    private final GraphicsController graphicsController;
+    public EllipseFx(Point centerPoint, double sMayorAxis, double sMinorAxis, GraphicsController graphicsController) {
         super(centerPoint, sMayorAxis, sMinorAxis);
-        this.gc = gc;
+        this.graphicsController = graphicsController;
     }
-    public void draw() {
-        gc.strokeOval(centerPoint.getX() - (sMayorAxis / 2), centerPoint.getY() - (sMinorAxis / 2), sMayorAxis, sMinorAxis);
-        gc.fillOval(centerPoint.getX() - (sMayorAxis / 2), centerPoint.getY() - (sMinorAxis / 2), sMayorAxis, sMinorAxis);
+    public void draw(boolean isSelected) {
+        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, fillColor, getStrokeColor(isSelected), strokeWeight);
     }
 
 }

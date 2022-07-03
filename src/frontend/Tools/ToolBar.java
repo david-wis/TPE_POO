@@ -1,40 +1,51 @@
 package frontend.Tools;
 
-import backend.model.Figure;
+import backend.model.ColoredFigure;
 import backend.model.Point;
 import frontend.FxFigures.CircleFx;
 import frontend.FxFigures.EllipseFx;
 import frontend.FxFigures.RectangleFx;
 import frontend.FxFigures.SquareFx;
+import frontend.GraphicsController;
+import frontend.PaintPane;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 public class ToolBar {
     private final ToggleButton selectionButton;
     private final ToggleButton deleteButton;
     private final ToggleButton enlargeButton;
     private final ToggleButton shrinkButton;
-    private final VBox buttonsBox;
+    private final Slider strokeSlider;
+    private final ColorPicker fillColorPicker;
+    private final ColorPicker strokeColorPicker;
+    private final VBox toolBox;
     private final ToggleGroup tools;
+    private final PaintPane pp;
 
-    private final Map<Toggle, BiFunction<Point, Point, Figure>> creatorMap;
+    private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
 
-    public ToolBar(GraphicsContext gc) {
+    public ToolBar(GraphicsController gc, PaintPane pp) {
+        this.pp = pp;
         selectionButton = new ToggleButton("Seleccionar");
         deleteButton = new ToggleButton("Borrar");
         enlargeButton = new ToggleButton("Agrandar");
         shrinkButton = new ToggleButton("Achicar");
+        strokeSlider = new Slider(0, 50, 0);
+        strokeSlider.setMajorTickUnit(26);
+
+        fillColorPicker = new ColorPicker();
+        strokeColorPicker = new ColorPicker();
 
         ToggleButton rectangleButton = new ToggleButton("Rectángulo"),
                     squareButton = new ToggleButton("Cuadrado"),
@@ -56,29 +67,58 @@ public class ToolBar {
                 }
         );
 
-        ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, enlargeButton, shrinkButton};
+        Control[] toolsArr = {
+                selectionButton,
+                rectangleButton,
+                circleButton,
+                squareButton,
+                ellipseButton,
+                deleteButton,
+                enlargeButton,
+                shrinkButton,
+                strokeSlider,
+                strokeColorPicker,
+                fillColorPicker,
+        };
 
         tools = new ToggleGroup();
-        for (ToggleButton tool : toolsArr) {
+        for (Control tool : toolsArr) {
             tool.setMinWidth(90);
-            tool.setToggleGroup(tools);
             tool.setCursor(Cursor.HAND);
         }
-        buttonsBox = new VBox(10);
-        buttonsBox.getChildren().addAll(toolsArr);
-        buttonsBox.setPadding(new Insets(5));
-        buttonsBox.setStyle("-fx-background-color: #999");
-        buttonsBox.setPrefWidth(100);
+        Stream.concat(creatorMap.keySet().stream().map(b -> (ToggleButton) b), Stream.of(selectionButton, deleteButton, shrinkButton, enlargeButton)).forEach(b -> b.setToggleGroup(tools));
+        toolBox = new VBox(10);
+        toolBox.getChildren().addAll(toolsArr);
+        toolBox.setPadding(new Insets(5));
+        toolBox.setStyle("-fx-background-color: #999");
+        toolBox.setPrefWidth(100); // TODO: Delete magic numbers
+        addEvents();
     }
 
-    public Optional<Figure> getSelectedFigure(Point startPoint, Point endPoint) {
+    private void addEvents() {
+        strokeColorPicker.setOnAction(event -> {
+            pp.getSelectedFigure().ifPresent(figure -> {
+                figure.setStrokeColor(strokeColorPicker.getValue().toString());
+                pp.redrawCanvas();
+            });
+        });
+
+        fillColorPicker.setOnAction(event -> {
+            pp.getSelectedFigure().ifPresent(figure -> {
+                figure.setFillColor(fillColorPicker.getValue().toString());
+                pp.redrawCanvas();
+            });
+        });
+    }
+
+    public Optional<ColoredFigure> getSelectedFigure(Point startPoint, Point endPoint) {
         if (tools.getSelectedToggle() != null)
             return Optional.ofNullable(creatorMap.getOrDefault(tools.getSelectedToggle(), (sp, ep) -> null).apply(startPoint, endPoint));
         return Optional.empty();
     }
 
-    public VBox getButtonsBox() {
-        return buttonsBox;
+    public VBox getToolBox() {
+        return toolBox;
     }
 
     public void addShrinkButtonHandler(EventHandler<ActionEvent> handler) {
@@ -91,6 +131,10 @@ public class ToolBar {
 
     public void addDeleteButtonHandler(EventHandler<ActionEvent> handler) {
         deleteButton.setOnAction(handler);
+    }
+
+    public void addStrokeSliderHandler(ChangeListener<Number> handler) {
+        strokeSlider.valueProperty().addListener(handler);
     }
 
     public boolean isSelecting() {
