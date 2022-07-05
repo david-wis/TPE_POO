@@ -23,7 +23,7 @@ public abstract class Rectangle extends ColoredFigure {
 
     @Override
     public String toString() {
-        return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
+        return String.format("%s [ %s , %s ]", getName(), topLeft, bottomRight);
     }
 
     @Override

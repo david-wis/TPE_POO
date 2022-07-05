@@ -20,7 +20,7 @@ public abstract class Ellipse extends ColoredFigure {
 
     @Override
     public String toString() {
-        return String.format("Elipse [Centro: %s, DMayor: %.2f, DMenor: %.2f]", centerPoint, sMayorAxis, sMinorAxis);
+        return String.format("%s [Centro: %s, DMayor: %.2f, DMenor: %.2f]", getName(), centerPoint, sMayorAxis, sMinorAxis);
     }
 
     public Point getCenterPoint() {
@@ -50,5 +50,10 @@ public abstract class Ellipse extends ColoredFigure {
     public void resize(double percentage) {
         sMayorAxis *= (1 + percentage/100);
         sMinorAxis *= (1 + percentage/100);
+    }
+
+    @Override
+    public String getName() {
+        return "Elipse";
     }
 }

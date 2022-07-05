@@ -1,5 +1,9 @@
 package frontend.Tools;
 
+import backend.model.Changes.*;
+import backend.model.Changes.ColorDataChanges.FillColorChange;
+import backend.model.Changes.ColorDataChanges.StrokeColorChange;
+import backend.model.Changes.ColorDataChanges.StrokeWeightChange;
 import backend.model.ColoredFigure;
 import backend.model.Point;
 import backend.model.Resizable;
@@ -18,14 +22,13 @@ import javafx.scene.paint.Color;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class ToolBar {
+public class ButtonToolBar {
     private final ToggleButton selectionButton;
-    private final ToggleButton deleteButton;
-    private final ToggleButton enlargeButton;
-    private final ToggleButton shrinkButton;
+    private final Button deleteButton;
+    private final Button enlargeButton;
+    private final Button shrinkButton;
     private final Slider strokeSlider;
     private final ColorPicker fillColorPicker;
     private final ColorPicker strokeColorPicker;
@@ -39,12 +42,12 @@ public class ToolBar {
 
     private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
 
-    public ToolBar(GraphicsController gc, PaintPane pp) {
+    public ButtonToolBar(GraphicsController gc, PaintPane pp) {
         this.pp = pp;
         selectionButton = new ToggleButton("Seleccionar");
-        deleteButton = new ToggleButton("Borrar");
-        enlargeButton = new ToggleButton("Agrandar");
-        shrinkButton = new ToggleButton("Achicar");
+        deleteButton = new Button("Borrar");
+        enlargeButton = new Button("Agrandar");
+        shrinkButton = new Button("Achicar");
         strokeSlider = new Slider(1, 50, 0);
         strokeSlider.setShowTickMarks(true);
         strokeSlider.setShowTickLabels(true);
@@ -57,7 +60,7 @@ public class ToolBar {
                     circleButton = new ToggleButton("Circulo");
 
         creatorMap = Map.of(
-                rectangleButton, (startPoint, endPoint) -> new RectangleFx(startPoint, endPoint, getCurrentColor() ,gc),
+                rectangleButton, (startPoint, endPoint) -> new RectangleFx(startPoint, endPoint, getCurrentColor(), gc),
                 squareButton , (startPoint, endPoint) -> new SquareFx(startPoint, Math.abs(endPoint.getX() - startPoint.getX()), getCurrentColor(), gc),
                 ellipseButton, (startPoint, endPoint) -> {
                     Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
@@ -92,7 +95,8 @@ public class ToolBar {
             tool.setMinWidth(90);
             tool.setCursor(Cursor.HAND);
         }
-        Stream.concat(creatorMap.keySet().stream().map(b -> (ToggleButton) b), Stream.of(selectionButton, deleteButton, shrinkButton, enlargeButton)).forEach(b -> b.setToggleGroup(tools));
+
+        Stream.concat(creatorMap.keySet().stream().map(b -> (ToggleButton) b), Stream.of(selectionButton)).forEach(b -> b.setToggleGroup(tools));
         toolBox = new VBox(10);
         toolBox.getChildren().addAll(toolsArr);
         toolBox.setPadding(new Insets(5));
@@ -105,24 +109,17 @@ public class ToolBar {
         strokeSlider.setValue(DEFAULT_STROKE_WEIGHT);
     }
     
-    private ColoredFigure.ColorData getCurrentColor() {
+    public ColoredFigure.ColorData getCurrentColor() {
         return new ColoredFigure.ColorData(fillColorPicker.getValue().toString(), strokeColorPicker.getValue().toString(), strokeSlider.getValue());
     }
 
     private void addEvents() {
-        strokeColorPicker.setOnAction(event -> onSelectedFigurePresent(figure -> figure.setStrokeColor(strokeColorPicker.getValue().toString())));
-        fillColorPicker.setOnAction(event -> onSelectedFigurePresent(figure -> figure.setFillColor(fillColorPicker.getValue().toString())));
-        deleteButton.setOnAction(event -> onSelectedFigurePresent(figure -> pp.deleteSelectedFigure()));
-        enlargeButton.setOnAction(event -> onSelectedFigurePresent(Resizable::enlarge));
-        shrinkButton.setOnAction(event -> onSelectedFigurePresent(Resizable::shrink));
-        strokeSlider.valueProperty().addListener((observable, oldValue, newValue) -> onSelectedFigurePresent((figure) -> figure.setStrokeWeight(newValue.doubleValue())));
-    }
-
-    private void onSelectedFigurePresent(Consumer<ColoredFigure> figureConsumer) {
-        pp.getSelectedFigure().ifPresent((figure) -> {
-            figureConsumer.accept(figure);
-            pp.redrawCanvas();
-        });
+        strokeColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new StrokeColorChange(figure, getCurrentColor())));
+        fillColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new FillColorChange(figure, getCurrentColor())));
+        strokeSlider.valueProperty().addListener((observable, oldValue, newValue) -> pp.onSelectedFigurePresent((figure) -> new StrokeWeightChange(figure, getCurrentColor())));
+        deleteButton.setOnAction(event -> pp.deleteSelectedFigure());
+        enlargeButton.setOnAction(event -> pp.onSelectedFigurePresent(EnlargeChange::new));
+        shrinkButton.setOnAction(event -> pp.onSelectedFigurePresent(ShrinkChange::new));
     }
 
     public Optional<ColoredFigure> getFigureFromSelectedButton(Point startPoint, Point endPoint) {

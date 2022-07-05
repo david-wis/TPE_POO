@@ -15,16 +15,12 @@ public abstract class ColoredFigure implements Figure{
         return isSelected ? SELECTED_STROKE_COLOR : colorData.strokeColor;
     }
 
-    public void setFillColor(String fillColor) {
-        this.colorData = new ColorData(fillColor, colorData.strokeColor, colorData.strokeWeight);
+    public void setColorData(ColorData colorData) {
+        this.colorData = colorData;
     }
 
-    public void setStrokeColor(String strokeColor){
-        this.colorData = new ColorData(colorData.fillColor, strokeColor, colorData.strokeWeight);
-    }
-
-    public void setStrokeWeight(double strokeWeight){
-        this.colorData = new ColorData(colorData.fillColor, colorData.strokeColor, strokeWeight);
+    public ColorData getColorData() {
+        return colorData;
     }
 
     public static class ColorData {
