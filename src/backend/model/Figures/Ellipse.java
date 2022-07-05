@@ -5,12 +5,14 @@ import backend.model.Figure;
 import backend.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 
+
 public abstract class Ellipse extends ColoredFigure {
 
     protected final Point centerPoint;
     protected double sMayorAxis, sMinorAxis;
 
-    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis) {
+    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis, ColorData colorData) {
+        super(colorData);
         this.centerPoint = centerPoint;
         this.sMayorAxis = sMayorAxis;
         this.sMinorAxis = sMinorAxis;

@@ -9,14 +9,14 @@ public class SquareFx extends Square {
 
     private final GraphicsController graphicsController;
 
-    public SquareFx(Point topLeft, double size, GraphicsController graphicsController) {
-        super(topLeft, size);
+    public SquareFx(Point topLeft, double size, ColorData colorData, GraphicsController graphicsController) {
+        super(topLeft, size, colorData);
         this.graphicsController = graphicsController;
     }
 
     @Override
     public void draw(boolean isSelected){
-        graphicsController.drawRectangle(topLeft, bottomRight, fillColor, getStrokeColor(isSelected), strokeWeight);
+        graphicsController.drawRectangle(topLeft, bottomRight, getFillColor(), getStrokeColor(isSelected), getStrokeWeight());
     }
 
 }

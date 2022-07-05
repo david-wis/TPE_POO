@@ -7,13 +7,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 public class PaintPane extends BorderPane {
 
 	// TODO: Add access modifiers
 
 	// BackEnd
-	CanvasState canvasState;
+	private CanvasState canvasState;
 
 	// Canvas y relacionados
 	Canvas canvas = new Canvas(800, 600);
@@ -44,7 +45,7 @@ public class PaintPane extends BorderPane {
 			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
 				return ;
 			}
-			tb.getSelectedFigure(startPoint, endPoint).ifPresent(canvasState::addFigure);
+			tb.getFigureFromSelectedButton(startPoint, endPoint).ifPresent(canvasState::addFigure);
 			startPoint = null;
 			redrawCanvas();
 		});
@@ -75,6 +76,7 @@ public class PaintPane extends BorderPane {
 					if(figure.pointBelongs(eventPoint)) {
 						found = true;
 						selectedFigure = figure;
+						tb.setFigureData(figure);
 						label.append(figure);
 					}
 				}
@@ -99,41 +101,17 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-		tb.addDeleteButtonHandler(event -> {
-			if (selectedFigure != null) {
-				canvasState.deleteFigure(selectedFigure);
-				selectedFigure = null;
-				redrawCanvas();
-			}
-		});
-
-		tb.addEnlargeButtonHandler(event -> {
-			if (selectedFigure != null) {
-				selectedFigure.enlarge();
-				redrawCanvas();
-			}
-		});
-
-		tb.addShrinkButtonHandler(event -> {
-			if (selectedFigure != null) {
-				selectedFigure.shrink();
-				redrawCanvas();
-			}
-		});
-
-		tb.addStrokeSliderHandler((observable, oldValue, newValue) -> {
-			if (selectedFigure != null) {
-				selectedFigure.setStrokeWeight(newValue.doubleValue());
-				redrawCanvas();
-			}
-		});
-
 		setLeft(tb.getToolBox());
 		setRight(canvas);
 	}
 
 	public Optional<ColoredFigure> getSelectedFigure() {
 		return Optional.ofNullable(selectedFigure);
+	}
+
+	public void deleteSelectedFigure(){
+		canvasState.deleteFigure(selectedFigure);
+		selectedFigure = null;
 	}
 
 	public void redrawCanvas() {

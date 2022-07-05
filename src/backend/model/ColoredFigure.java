@@ -1,28 +1,40 @@
 package backend.model;
 
 public abstract class ColoredFigure implements Figure{
-    private static final String DEFAULT_FILL_COLOR = "#FF0080";
-    private static final String DEFAULT_STROKE_COLOR = "#6600A1";
-    private static final String SELECTED_STROKE_COLOR = "#FF0000";
-    private static final double DEFAULT_STROKE_WEIGHT = 1;
+    public static final String SELECTED_STROKE_COLOR = "#FF0000";
+    private ColorData colorData;
 
-    protected String fillColor = DEFAULT_FILL_COLOR;
-    protected String strokeColor = DEFAULT_STROKE_COLOR;
-    protected double strokeWeight = DEFAULT_STROKE_WEIGHT;
+    public ColoredFigure(ColorData colorData) {
+        this.colorData = colorData;
+    }
+
+    public String getFillColor() { return colorData.fillColor; }
+    public double getStrokeWeight() { return colorData.strokeWeight; }
 
     public String getStrokeColor(boolean isSelected) {
-        return isSelected ? SELECTED_STROKE_COLOR : strokeColor;
+        return isSelected ? SELECTED_STROKE_COLOR : colorData.strokeColor;
     }
 
     public void setFillColor(String fillColor) {
-        this.fillColor = fillColor;
+        this.colorData = new ColorData(fillColor, colorData.strokeColor, colorData.strokeWeight);
     }
 
-    public void setStrokeColor(String strokeColor) {
-        this.strokeColor = strokeColor;
+    public void setStrokeColor(String strokeColor){
+        this.colorData = new ColorData(colorData.fillColor, strokeColor, colorData.strokeWeight);
     }
 
-    public void setStrokeWeight(double strokeWeight) {
-        this.strokeWeight = strokeWeight;
+    public void setStrokeWeight(double strokeWeight){
+        this.colorData = new ColorData(colorData.fillColor, colorData.strokeColor, strokeWeight);
+    }
+
+    public static class ColorData {
+        private final String fillColor, strokeColor;
+        private final double strokeWeight;
+
+        public ColorData(String fillColor, String strokeColor, double strokeWeight) {
+            this.fillColor = fillColor;
+            this.strokeColor = strokeColor;
+            this.strokeWeight = strokeWeight;
+        }
     }
 }

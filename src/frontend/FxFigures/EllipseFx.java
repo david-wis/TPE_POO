@@ -8,12 +8,12 @@ import javafx.scene.canvas.GraphicsContext;
 public class EllipseFx extends Ellipse {
 
     private final GraphicsController graphicsController;
-    public EllipseFx(Point centerPoint, double sMayorAxis, double sMinorAxis, GraphicsController graphicsController) {
-        super(centerPoint, sMayorAxis, sMinorAxis);
+    public EllipseFx(Point centerPoint, double sMayorAxis, double sMinorAxis, ColorData colorData, GraphicsController graphicsController) {
+        super(centerPoint, sMayorAxis, sMinorAxis, colorData);
         this.graphicsController = graphicsController;
     }
     public void draw(boolean isSelected) {
-        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, fillColor, getStrokeColor(isSelected), strokeWeight);
+        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, getFillColor(), getStrokeColor(isSelected), getStrokeWeight());
     }
 
 }

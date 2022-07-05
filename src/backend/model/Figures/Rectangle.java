@@ -7,7 +7,8 @@ import backend.model.Point;
 public abstract class Rectangle extends ColoredFigure {
     protected final Point topLeft, bottomRight;
 
-    public Rectangle(Point topLeft, Point bottomRight) {
+    public Rectangle(Point topLeft, Point bottomRight, ColorData colorData) {
+        super(colorData);
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
     }

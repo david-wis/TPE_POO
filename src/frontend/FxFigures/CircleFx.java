@@ -8,13 +8,13 @@ import javafx.scene.canvas.GraphicsContext;
 public class CircleFx extends Circle {
     private final GraphicsController graphicsController;
 
-    public CircleFx(Point centerPoint, double radius, GraphicsController graphicsController) {
-        super(centerPoint, radius);
+    public CircleFx(Point centerPoint, double radius, ColorData colorData, GraphicsController graphicsController) {
+        super(centerPoint, radius, colorData);
         this.graphicsController = graphicsController;
     }
 
     @Override
     public void draw(boolean isSelected) {
-        graphicsController.drawEllipse(centerPoint, getRadius(), getRadius(), fillColor, getStrokeColor(isSelected), strokeWeight);
+        graphicsController.drawEllipse(centerPoint, getRadius(), getRadius(), getFillColor(), getStrokeColor(isSelected), getStrokeWeight());
     }
 }
