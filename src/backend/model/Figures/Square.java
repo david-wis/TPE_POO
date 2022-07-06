@@ -13,4 +13,8 @@ public abstract class Square extends Rectangle {
         return String.format("Cuadrado [ %s , %s ]", topLeft, bottomRight);
     }
 
+    @Override
+    public String getName(){
+        return "Cuadrado";
+    }
 }

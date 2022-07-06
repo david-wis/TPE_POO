@@ -7,7 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 public abstract class Ellipse extends ColoredFigure {
-
     protected final Point centerPoint;
     protected double sMayorAxis, sMinorAxis;
 

@@ -2,12 +2,9 @@ package frontend.Tools;
 
 import backend.CanvasState;
 import frontend.PaintPane;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 public class ChangesBar {
     private final Button redoButton;

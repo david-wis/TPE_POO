@@ -45,4 +45,9 @@ public abstract class Rectangle extends ColoredFigure {
         topLeft.move(-dx/2, dy/2);
         bottomRight.move(dx/2, -dy/2);
     }
+
+    @Override
+    public String getName(){
+        return "Rectángulo";
+    }
 }

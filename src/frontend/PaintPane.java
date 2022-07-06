@@ -2,7 +2,12 @@ package frontend;
 
 import backend.CanvasState;
 import backend.model.*;
-import frontend.Tools.ToolBar;
+import backend.model.Changes.Change;
+import backend.model.Changes.CreateChange;
+import backend.model.Changes.DeleteChange;
+import frontend.Tools.ButtonToolBar;
+import frontend.Tools.ChangesBar;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 
@@ -14,7 +19,7 @@ public class PaintPane extends BorderPane {
 	// TODO: Add access modifiers
 
 	// BackEnd
-	private CanvasState canvasState;
+	private final CanvasState canvasState;
 
 	// Canvas y relacionados
 	Canvas canvas = new Canvas(800, 600);
@@ -104,9 +109,10 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
-
+		setTop(cb.getChangesBox());
 		setLeft(tb.getToolBox());
 		setRight(canvas);
+
 	}
 
 	private Optional<ColoredFigure> getSelectedFigure() {
