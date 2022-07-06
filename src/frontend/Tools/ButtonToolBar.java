@@ -6,16 +6,17 @@ import backend.model.Changes.ColorDataChanges.StrokeColorChange;
 import backend.model.Changes.ColorDataChanges.StrokeWeightChange;
 import backend.model.ColoredFigure;
 import backend.model.Point;
-import backend.model.Resizable;
 import frontend.FxFigures.CircleFx;
 import frontend.FxFigures.EllipseFx;
 import frontend.FxFigures.RectangleFx;
 import frontend.FxFigures.SquareFx;
 import frontend.GraphicsController;
 import frontend.PaintPane;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -38,7 +39,7 @@ public class ButtonToolBar {
 
     private static final String DEFAULT_FILL_COLOR = "#FF0080";
     private static final String DEFAULT_STROKE_COLOR = "#6600A1";
-    private static final double DEFAULT_STROKE_WEIGHT = 1;
+    private static final double DEFAULT_STROKE_WEIGHT = 3;
 
     private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
 
@@ -107,6 +108,7 @@ public class ButtonToolBar {
         fillColorPicker.setValue(Color.web(DEFAULT_FILL_COLOR));
         strokeColorPicker.setValue(Color.web(DEFAULT_STROKE_COLOR));
         strokeSlider.setValue(DEFAULT_STROKE_WEIGHT);
+        strokeSlider.addEventFilter(KeyEvent.KEY_PRESSED, Event::consume);
     }
     
     public ColoredFigure.ColorData getCurrentColor() {
@@ -116,7 +118,7 @@ public class ButtonToolBar {
     private void addEvents() {
         strokeColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new StrokeColorChange(figure, getCurrentColor())));
         fillColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new FillColorChange(figure, getCurrentColor())));
-        strokeSlider.valueProperty().addListener((observable, oldValue, newValue) -> pp.onSelectedFigurePresent((figure) -> new StrokeWeightChange(figure, getCurrentColor())));
+        strokeSlider.setOnMouseReleased(event -> pp.onSelectedFigurePresent(figure -> new StrokeWeightChange(figure, getCurrentColor())));
         deleteButton.setOnAction(event -> pp.deleteSelectedFigure());
         enlargeButton.setOnAction(event -> pp.onSelectedFigurePresent(EnlargeChange::new));
         shrinkButton.setOnAction(event -> pp.onSelectedFigurePresent(ShrinkChange::new));

@@ -40,4 +40,8 @@ public class GraphicsController {
         gc.strokeOval(centerPoint.getX() - (sMayorAxis / 2), centerPoint.getY() - (sMinorAxis / 2), sMayorAxis, sMinorAxis);
         gc.fillOval(centerPoint.getX() - (sMayorAxis / 2), centerPoint.getY() - (sMinorAxis / 2), sMayorAxis, sMinorAxis);
     }
+
+    public void drawCircle(Point centerPoint, double radius, String fillColor, String strokeColor, double strokeWeight) {
+        drawEllipse(centerPoint, 2 * radius, 2 * radius, fillColor, strokeColor, strokeWeight);
+    }
 }

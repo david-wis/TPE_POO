@@ -4,7 +4,7 @@ import backend.model.Point;
 
 public abstract class Circle extends Ellipse {
     public Circle(Point centerPoint, double radius, ColorData colorData) {
-        super(centerPoint, radius, radius, colorData);
+        super(centerPoint, 2 * radius, 2 * radius, colorData);
     }
 
     @Override
@@ -13,7 +13,7 @@ public abstract class Circle extends Ellipse {
     }
 
     public double getRadius() {
-        return sMayorAxis;
+        return sMayorAxis/2;
     }
 
     @Override

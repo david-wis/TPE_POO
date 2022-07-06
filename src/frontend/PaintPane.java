@@ -7,33 +7,31 @@ import backend.model.Changes.CreateChange;
 import backend.model.Changes.DeleteChange;
 import frontend.Tools.ButtonToolBar;
 import frontend.Tools.ChangesBar;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
-
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.StreamSupport;
 
 public class PaintPane extends BorderPane {
-
-	// TODO: Add access modifiers
 
 	// BackEnd
 	private final CanvasState canvasState;
 
 	// Canvas y relacionados
-	Canvas canvas = new Canvas(800, 600);
+	private final Canvas canvas = new Canvas(800, 600);
 
-	GraphicsController gc = new GraphicsController(canvas.getGraphicsContext2D());
+	private final GraphicsController gc = new GraphicsController(canvas.getGraphicsContext2D());
 
 	// Dibujar una figura
-	Point startPoint;
+	private Point startPoint;
 
 	// Seleccionar una figura
 	private ColoredFigure selectedFigure;
 
 	// StatusBar
-	StatusPane statusPane;
+	private final StatusPane statusPane;
 
 	private final ButtonToolBar tb;
 	private final ChangesBar cb;
@@ -48,53 +46,29 @@ public class PaintPane extends BorderPane {
 
 		canvas.setOnMouseReleased(event -> {
 			Point endPoint = new Point(event.getX(), event.getY());
-			if(startPoint == null) {
-				return ;
-			}
-			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
-				return ;
-			}
-			tb.getFigureFromSelectedButton(startPoint, endPoint).ifPresent(figure -> canvasState.addChange(new CreateChange(figure, canvasState)));
-			startPoint = null;
-			redrawCanvas();
+			Optional.ofNullable(startPoint).ifPresent(sp -> {
+				if (endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY())	 {
+					tb.getFigureFromSelectedButton(startPoint, endPoint).ifPresent(figure -> canvasState.addChange(new CreateChange(figure, canvasState)));
+					startPoint = null;
+					redrawCanvas();
+				}
+			});
 		});
 
 		canvas.setOnMouseMoved(event -> {
 			Point eventPoint = new Point(event.getX(), event.getY());
-			boolean found = false;
-			StringBuilder label = new StringBuilder();
-			for(Figure figure : canvasState.figures()) {
-				if(figure.pointBelongs(eventPoint)) {
-					found = true;
-					label.append(figure);
-				}
-			}
-			if(found) {
-				statusPane.updateStatus(label.toString());
-			} else {
-				statusPane.updateStatus(eventPoint.toString());
-			}
+			onLastFoundFigure(new Point(event.getX(), event.getY()), "", (figure) -> {}, () -> statusPane.updateStatus(eventPoint.toString()));
 		});
 
 		canvas.setOnMouseClicked(event -> {
 			if(tb.isSelecting()) {
-				Point eventPoint = new Point(event.getX(), event.getY());
-				boolean found = false;
-				StringBuilder label = new StringBuilder("Se seleccionó: ");
-				for (ColoredFigure figure : canvasState.figures()) {
-					if(figure.pointBelongs(eventPoint)) {
-						found = true;
-						selectedFigure = figure;
-						tb.setFigureData(figure);
-						label.append(figure);
-					}
-				}
-				if (found) {
-					statusPane.updateStatus(label.toString());
-				} else {
+				onLastFoundFigure(new Point(event.getX(), event.getY()), "Se seleccionó: ", (figure) -> {
+					selectedFigure = figure;
+					tb.setFigureData(selectedFigure);
+				}, () -> {
 					selectedFigure = null;
 					statusPane.updateStatus("Ninguna figura encontrada");
-				}
+				});
 				redrawCanvas();
 			}
 		});
@@ -112,7 +86,19 @@ public class PaintPane extends BorderPane {
 		setTop(cb.getChangesBox());
 		setLeft(tb.getToolBox());
 		setRight(canvas);
+	}
 
+	private void onLastFoundFigure(Point eventPoint, String baseMessage, Consumer<ColoredFigure> figureFoundConsumer, Runnable figureNotFoundRunnable) {
+		StreamSupport
+				.stream(canvasState.figures().spliterator(), false)
+				.filter(f -> f.pointBelongs(eventPoint))
+				.reduce((o, n) -> n) // Get last figure
+				.ifPresentOrElse(f -> {
+					figureFoundConsumer.accept(f);
+					StringBuilder label = new StringBuilder(baseMessage);
+					label.append(selectedFigure);
+					statusPane.updateStatus(label.toString());
+				}, figureNotFoundRunnable);
 	}
 
 	private Optional<ColoredFigure> getSelectedFigure() {

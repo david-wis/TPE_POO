@@ -1,7 +1,6 @@
 package backend.model.Figures;
 
 import backend.model.ColoredFigure;
-import backend.model.Figure;
 import backend.model.Point;
 
 public abstract class Rectangle extends ColoredFigure {

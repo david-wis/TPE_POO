@@ -1,7 +1,5 @@
 package backend.model;
 
-import backend.model.Movable;
-
 public class Point implements Movable {
 
     private double x, y;

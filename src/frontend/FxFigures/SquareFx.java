@@ -3,7 +3,6 @@ package frontend.FxFigures;
 import backend.model.Figures.Square;
 import backend.model.Point;
 import frontend.GraphicsController;
-import javafx.scene.canvas.GraphicsContext;
 
 public class SquareFx extends Square {
 

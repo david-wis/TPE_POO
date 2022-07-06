@@ -3,7 +3,6 @@ package frontend.FxFigures;
 import backend.model.Figures.Circle;
 import backend.model.Point;
 import frontend.GraphicsController;
-import javafx.scene.canvas.GraphicsContext;
 
 public class CircleFx extends Circle {
     private final GraphicsController graphicsController;
@@ -15,6 +14,6 @@ public class CircleFx extends Circle {
 
     @Override
     public void draw(boolean isSelected) {
-        graphicsController.drawEllipse(centerPoint, getRadius(), getRadius(), getFillColor(), getStrokeColor(isSelected), getStrokeWeight());
+        graphicsController.drawCircle(centerPoint, getRadius(), getFillColor(), getStrokeColor(isSelected), getStrokeWeight());
     }
 }

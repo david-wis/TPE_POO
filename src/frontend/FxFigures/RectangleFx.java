@@ -3,7 +3,6 @@ package frontend.FxFigures;
 import backend.model.Figures.Rectangle;
 import backend.model.Point;
 import frontend.GraphicsController;
-import javafx.scene.canvas.GraphicsContext;
 
 public class RectangleFx extends Rectangle {
 
