@@ -1,6 +1,6 @@
 package backend.model;
 
-public abstract class ColoredFigure extends DrawableFigure {
+public abstract class ColoredFigure extends Figure {
     private ColorData colorData;
 
     public ColoredFigure(ColorData colorData, GraphicsController graphicsController) {
