@@ -19,8 +19,7 @@ public class Circle extends Ellipse {
 
     @Override
     public boolean pointBelongs(Point eventPoint) {
-        return Math.sqrt(Math.pow(centerPoint.getX() - eventPoint.getX(), 2) +
-                Math.pow(centerPoint.getY() - eventPoint.getY(), 2)) < getRadius();
+        return centerPoint.distanceTo(eventPoint) < getRadius();
     }
 
     @Override
@@ -29,7 +28,7 @@ public class Circle extends Ellipse {
     }
 
     @Override
-    public void draw(boolean isSelected) {
-        graphicsController.drawCircle(centerPoint, getRadius(), new ColorData(getFillColor(), getStrokeColor(isSelected), getStrokeWeight()));
+    public void draw(String strokeColor) {
+        graphicsController.drawCircle(centerPoint, getRadius(), new ColorData(getFillColor(), strokeColor, getStrokeWeight()));
     }
 }

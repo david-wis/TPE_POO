@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
 public class PaintPane extends BorderPane {
+	private static final String SELECTED_STROKE_COLOR = "#FF0000";
 
 	// BackEnd
 	private final CanvasState canvasState;
@@ -95,9 +96,7 @@ public class PaintPane extends BorderPane {
 				.reduce((o, n) -> n) // Get last figure
 				.ifPresentOrElse(f -> {
 					figureFoundConsumer.accept(f);
-					StringBuilder label = new StringBuilder(baseMessage);
-					label.append(selectedFigure);
-					statusPane.updateStatus(label.toString());
+					statusPane.updateStatus(baseMessage + f);
 				}, figureNotFoundRunnable);
 	}
 
@@ -132,7 +131,12 @@ public class PaintPane extends BorderPane {
 
 	private void redrawCanvas() {
 		gc.clear(canvas.getWidth(), canvas.getHeight());
-		canvasState.figures().forEach(f -> f.draw(f == selectedFigure));
+		canvasState.figures().forEach(f -> {
+			if (selectedFigure == f)
+				f.draw(SELECTED_STROKE_COLOR);
+			else
+				f.draw();
+		});
 		cb.setChangeLabels(canvasState.getChangeData());
 	}
 }

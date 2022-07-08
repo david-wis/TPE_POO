@@ -70,7 +70,7 @@ public class ButtonToolBar {
                     return new Ellipse(centerPoint, sMayorAxis, sMinorAxis, getCurrentColor(), gc);
                 },
                 circleButton, (startPoint, endPoint) -> {
-                    double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
+                    double circleRadius = startPoint.distanceTo(endPoint);
                     return new Circle(startPoint, circleRadius, getCurrentColor() , gc);
                 }
         );
@@ -137,7 +137,7 @@ public class ButtonToolBar {
     public void setFigureData(ColoredFigure figure) {
         strokeSlider.setValue(figure.getStrokeWeight());
         fillColorPicker.setValue(Color.web(figure.getFillColor()));
-        strokeColorPicker.setValue(Color.web(figure.getStrokeColor(false)));
+        strokeColorPicker.setValue(Color.web(figure.getStrokeColor()));
     }
 
     public boolean isSelecting() {

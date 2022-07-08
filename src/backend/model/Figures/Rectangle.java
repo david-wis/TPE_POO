@@ -52,7 +52,7 @@ public class Rectangle extends ColoredFigure {
     }
 
     @Override
-    public void draw(boolean isSelected) {
-        graphicsController.drawRectangle(topLeft, bottomRight, new ColorData(getFillColor(), getStrokeColor(isSelected), getStrokeWeight()));
+    public void draw(String strokeColor) {
+        graphicsController.drawRectangle(topLeft, bottomRight, new ColorData(getFillColor(), strokeColor, getStrokeWeight()));
     }
 }

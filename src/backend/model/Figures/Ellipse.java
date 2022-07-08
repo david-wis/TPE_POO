@@ -55,7 +55,7 @@ public class Ellipse extends ColoredFigure {
         return "Elipse";
     }
 
-    public void draw(boolean isSelected) {
-        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, new ColorData(getFillColor(), getStrokeColor(isSelected), getStrokeWeight()));
+    public void draw(String strokeColor) {
+        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, new ColorData(getFillColor(), strokeColor, getStrokeWeight()));
     }
 }

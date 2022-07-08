@@ -27,4 +27,9 @@ public class Point implements Movable {
         x += dx;
         y += dy;
     }
+
+    public double distanceTo(Point target){
+        return Math.sqrt(Math.pow(x - target.x, 2) +
+                Math.pow(y - target.y, 2));
+    }
 }

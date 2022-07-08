@@ -1,7 +1,6 @@
 package backend.model;
 
 public abstract class ColoredFigure extends DrawableFigure {
-    public static final String SELECTED_STROKE_COLOR = "#FF0000";
     private ColorData colorData;
 
     public ColoredFigure(ColorData colorData, GraphicsController graphicsController) {
@@ -10,10 +9,11 @@ public abstract class ColoredFigure extends DrawableFigure {
     }
 
     public String getFillColor() { return colorData.fillColor; }
+
     public double getStrokeWeight() { return colorData.strokeWeight; }
 
-    public String getStrokeColor(boolean isSelected) {
-        return isSelected ? SELECTED_STROKE_COLOR : colorData.strokeColor;
+    public String getStrokeColor() {
+        return colorData.strokeColor;
     }
 
     public void setColorData(ColorData colorData) {
@@ -23,6 +23,12 @@ public abstract class ColoredFigure extends DrawableFigure {
     public ColorData getColorData() {
         return colorData;
     }
+
+    public void draw() {
+        draw(colorData.strokeColor);
+    }
+
+    public abstract void draw(String strokeColor);
 
     public static class ColorData {
         private final String fillColor, strokeColor;
@@ -46,4 +52,5 @@ public abstract class ColoredFigure extends DrawableFigure {
             return strokeWeight;
         }
     }
+
 }
