@@ -1,10 +1,11 @@
 package backend.model.Figures;
 
+import backend.model.GraphicsController;
 import backend.model.Point;
 
-public abstract class Circle extends Ellipse {
-    public Circle(Point centerPoint, double radius, ColorData colorData) {
-        super(centerPoint, 2 * radius, 2 * radius, colorData);
+public class Circle extends Ellipse {
+    public Circle(Point centerPoint, double radius, ColorData colorData, GraphicsController graphicsController) {
+        super(centerPoint, 2 * radius, 2 * radius, colorData, graphicsController);
     }
 
     @Override
@@ -25,5 +26,10 @@ public abstract class Circle extends Ellipse {
     @Override
     public String getName() {
         return "Circulo";
+    }
+
+    @Override
+    public void draw(boolean isSelected) {
+        graphicsController.drawCircle(centerPoint, getRadius(), new ColorData(getFillColor(), getStrokeColor(isSelected), getStrokeWeight()));
     }
 }

@@ -1,10 +1,11 @@
 package backend.model;
 
-public abstract class ColoredFigure implements Figure{
+public abstract class ColoredFigure extends DrawableFigure {
     public static final String SELECTED_STROKE_COLOR = "#FF0000";
     private ColorData colorData;
 
-    public ColoredFigure(ColorData colorData) {
+    public ColoredFigure(ColorData colorData, GraphicsController graphicsController) {
+        super(graphicsController);
         this.colorData = colorData;
     }
 
@@ -31,6 +32,18 @@ public abstract class ColoredFigure implements Figure{
             this.fillColor = fillColor;
             this.strokeColor = strokeColor;
             this.strokeWeight = strokeWeight;
+        }
+
+        public String getFillColor() {
+            return fillColor;
+        }
+
+        public String getStrokeColor() {
+            return strokeColor;
+        }
+
+        public double getStrokeWeight() {
+            return strokeWeight;
         }
     }
 }

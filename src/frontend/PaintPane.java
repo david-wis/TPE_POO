@@ -22,7 +22,7 @@ public class PaintPane extends BorderPane {
 	// Canvas y relacionados
 	private final Canvas canvas = new Canvas(800, 600);
 
-	private final GraphicsController gc = new GraphicsController(canvas.getGraphicsContext2D());
+	private final GraphicsControllerFx gc = new GraphicsControllerFx(canvas.getGraphicsContext2D());
 
 	// Dibujar una figura
 	private Point startPoint;

@@ -1,13 +1,14 @@
 package backend.model.Figures;
 
 import backend.model.ColoredFigure;
+import backend.model.GraphicsController;
 import backend.model.Point;
 
-public abstract class Rectangle extends ColoredFigure {
+public class Rectangle extends ColoredFigure {
     protected final Point topLeft, bottomRight;
 
-    public Rectangle(Point topLeft, Point bottomRight, ColorData colorData) {
-        super(colorData);
+    public Rectangle(Point topLeft, Point bottomRight, ColorData colorData, GraphicsController graphicsController) {
+        super(colorData, graphicsController);
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
     }
@@ -48,5 +49,10 @@ public abstract class Rectangle extends ColoredFigure {
     @Override
     public String getName(){
         return "Rectángulo";
+    }
+
+    @Override
+    public void draw(boolean isSelected) {
+        graphicsController.drawRectangle(topLeft, bottomRight, new ColorData(getFillColor(), getStrokeColor(isSelected), getStrokeWeight()));
     }
 }

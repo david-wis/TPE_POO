@@ -1,15 +1,16 @@
 package backend.model.Figures;
 
 import backend.model.ColoredFigure;
+import backend.model.GraphicsController;
 import backend.model.Point;
 
 
-public abstract class Ellipse extends ColoredFigure {
+public class Ellipse extends ColoredFigure {
     protected final Point centerPoint;
     protected double sMayorAxis, sMinorAxis;
 
-    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis, ColorData colorData) {
-        super(colorData);
+    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis, ColorData colorData, GraphicsController graphicsController) {
+        super(colorData, graphicsController);
         this.centerPoint = centerPoint;
         this.sMayorAxis = sMayorAxis;
         this.sMinorAxis = sMinorAxis;
@@ -52,5 +53,9 @@ public abstract class Ellipse extends ColoredFigure {
     @Override
     public String getName() {
         return "Elipse";
+    }
+
+    public void draw(boolean isSelected) {
+        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, new ColorData(getFillColor(), getStrokeColor(isSelected), getStrokeWeight()));
     }
 }

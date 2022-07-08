@@ -5,12 +5,12 @@ import backend.model.Changes.ColorDataChanges.FillColorChange;
 import backend.model.Changes.ColorDataChanges.StrokeColorChange;
 import backend.model.Changes.ColorDataChanges.StrokeWeightChange;
 import backend.model.ColoredFigure;
+import backend.model.Figures.Circle;
+import backend.model.Figures.Ellipse;
+import backend.model.Figures.Rectangle;
+import backend.model.Figures.Square;
 import backend.model.Point;
-import frontend.FxFigures.CircleFx;
-import frontend.FxFigures.EllipseFx;
-import frontend.FxFigures.RectangleFx;
-import frontend.FxFigures.SquareFx;
-import frontend.GraphicsController;
+import frontend.GraphicsControllerFx;
 import frontend.PaintPane;
 import javafx.event.Event;
 import javafx.geometry.Insets;
@@ -43,7 +43,7 @@ public class ButtonToolBar {
 
     private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
 
-    public ButtonToolBar(GraphicsController gc, PaintPane pp) {
+    public ButtonToolBar(GraphicsControllerFx gc, PaintPane pp) {
         this.pp = pp;
         selectionButton = new ToggleButton("Seleccionar");
         deleteButton = new Button("Borrar");
@@ -61,17 +61,17 @@ public class ButtonToolBar {
                     circleButton = new ToggleButton("Circulo");
 
         creatorMap = Map.of(
-                rectangleButton, (startPoint, endPoint) -> new RectangleFx(startPoint, endPoint, getCurrentColor(), gc),
-                squareButton , (startPoint, endPoint) -> new SquareFx(startPoint, Math.abs(endPoint.getX() - startPoint.getX()), getCurrentColor(), gc),
+                rectangleButton, (startPoint, endPoint) -> new Rectangle(startPoint, endPoint, getCurrentColor(), gc),
+                squareButton , (startPoint, endPoint) -> new Square(startPoint, Math.abs(endPoint.getX() - startPoint.getX()), getCurrentColor(), gc),
                 ellipseButton, (startPoint, endPoint) -> {
                     Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
                     double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
                     double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
-                    return new EllipseFx(centerPoint, sMayorAxis, sMinorAxis, getCurrentColor(), gc);
+                    return new Ellipse(centerPoint, sMayorAxis, sMinorAxis, getCurrentColor(), gc);
                 },
                 circleButton, (startPoint, endPoint) -> {
                     double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
-                    return new CircleFx(startPoint, circleRadius, getCurrentColor() , gc);
+                    return new Circle(startPoint, circleRadius, getCurrentColor() , gc);
                 }
         );
 
