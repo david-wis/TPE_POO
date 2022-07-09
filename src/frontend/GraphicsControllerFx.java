@@ -15,7 +15,6 @@ public class GraphicsControllerFx extends GraphicsController {
         gc.setLineWidth(DEFAULT_LINE_WIDTH);
     }
 
-    @Override
     public void clear(double width, double height) {
         gc.clearRect(0, 0, width, height);
     }
