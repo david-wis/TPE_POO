@@ -48,6 +48,7 @@ public class PaintPane extends BorderPane {
 	private static final String NO_FIGURES_FOUND = "Ninguna figura encontrada";
 	private static final String ERROR = "Error";
 	private static final String WAS_SELECTED = "Se seleccionó: ";
+	private static final double SPEED = 100.0; // Velocidad de traslacion
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
@@ -105,8 +106,10 @@ public class PaintPane extends BorderPane {
 				Point eventPoint = new Point(event.getX(), event.getY());
 				double diffX = (eventPoint.getX() - startPoint.getX()) / 100;
 				double diffY = (eventPoint.getY() - startPoint.getY()) / 100;
-				if (selectedFigure != null)
-					selectedFigure.move(diffX, diffY);
+				if (selectedFigure != null) {
+					startPoint = eventPoint;
+					selectedFigure.move(SPEED*diffX, SPEED*diffY);
+				}
 				redrawCanvas();
 			}
 		});
