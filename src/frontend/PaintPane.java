@@ -41,6 +41,12 @@ public class PaintPane extends BorderPane {
 	// Barra de la derecha
 	private final ChangesBar cb;
 
+	// Constantes
+	private static final String NO_FIGURES_SELECTED = "No hay ningún objeto seleccionado";
+	private static final String NO_FIGURES_FOUND = "Ninguna figura encontrada";
+	private static final String ERROR = "Error";
+	private static final String WAS_SELECTED = "Se seleccionó: ";
+
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
@@ -73,12 +79,12 @@ public class PaintPane extends BorderPane {
 
 		canvas.setOnMouseClicked(event -> {
 			if(tb.isSelecting()) {
-				onLastFoundFigure(new Point(event.getX(), event.getY()), "Se seleccionó: ", (figure) -> {
+				onLastFoundFigure(new Point(event.getX(), event.getY()), WAS_SELECTED, (figure) -> {
 					selectedFigure = figure;
 					tb.setColorData(selectedFigure.getColorData());
 				}, () -> {
 					selectedFigure = null;
-					statusPane.updateStatus("Ninguna figura encontrada");
+					statusPane.updateStatus(NO_FIGURES_FOUND);
 				});
 				redrawCanvas();
 			}
@@ -121,8 +127,8 @@ public class PaintPane extends BorderPane {
 	public void onSelectedFigurePresentMandatory(Function<ColoredFigure, Change> changeFunction) {
 		if (selectedFigure == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("No hay ningun objeto seleccionado");
+			alert.setTitle(ERROR);
+			alert.setHeaderText(NO_FIGURES_SELECTED);
 			alert.show();
 			return;
 		}

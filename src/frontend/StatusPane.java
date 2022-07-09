@@ -8,11 +8,14 @@ public class StatusPane extends BorderPane {
 
 	private final Label statusLabel;
 
+	private static final String BACKGROUND_COLOR = "-fx-background-color: #4EBCF8";
+	private static final String FONT_SIZE = "-fx-font-size: 16";
+
 	public StatusPane() {
-		setStyle("-fx-background-color: #4EBCF8");
+		setStyle(BACKGROUND_COLOR);
 		statusLabel = new Label("");
 		statusLabel.setAlignment(Pos.CENTER);
-		statusLabel.setStyle("-fx-font-size: 16");
+		statusLabel.setStyle(FONT_SIZE);
 		setCenter(statusLabel);
 	}
 	

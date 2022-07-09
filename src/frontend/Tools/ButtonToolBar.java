@@ -37,28 +37,47 @@ public class ButtonToolBar {
     private final ToggleGroup tools;
     private final PaintPane pp;
 
+    // Constantes
+    private static final String SELECTION_BUTTON_TEXT = "Seleccionar";
+    private static final String DELETE_BUTTON_TEXT = "Borrar";
+    private static final String ENLARGE_BUTTON_TEXT = "Agrandar";
+    private static final String SHRINK_BUTTON_TEXT = "Achicar";
+    private static final String RECTANGLE = "Rectángulo";
+    private static final String SQUARE = "Cuadrado";
+    private static final String ELLIPSE = "Elipse" ;
+    private static final String CIRCLE = "Circulo";
+    private static final String BORDER = "Borde";
+    private static final String FILL = "Relleno";
+    private static final double MIN_WIDTH = 90.0;
+    private static final double VBOX_SIZE = 10.0;
+    private static final double PADDING = 5.0;
+    private static final String BACKGROUND_COLOR = "-fx-background-color: #999";
+    private static final double PREF_WIDTH = 100.0;
     private static final String DEFAULT_FILL_COLOR = "#FF0080";
     private static final String DEFAULT_STROKE_COLOR = "#6600A1";
-    private static final double DEFAULT_STROKE_WEIGHT = 3;
+    private static final double MIN_STROKE_WEIGHT = 1.0;
+    private static final double MAX_STROKE_WEIGHT = 50.0;
+    private static final double DEFAULT_STROKE_WEIGHT = 3.0;
+
 
     private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
 
     public ButtonToolBar(GraphicsControllerFx gc, PaintPane pp) {
         this.pp = pp;
-        selectionButton = new ToggleButton("Seleccionar");
-        deleteButton = new Button("Borrar");
-        enlargeButton = new Button("Agrandar");
-        shrinkButton = new Button("Achicar");
-        strokeSlider = new Slider(1, 50, 0);
+        selectionButton = new ToggleButton(SELECTION_BUTTON_TEXT);
+        deleteButton = new Button(DELETE_BUTTON_TEXT);
+        enlargeButton = new Button(ENLARGE_BUTTON_TEXT);
+        shrinkButton = new Button(SHRINK_BUTTON_TEXT);
+        strokeSlider = new Slider(MIN_STROKE_WEIGHT, MAX_STROKE_WEIGHT, DEFAULT_STROKE_WEIGHT);
         strokeSlider.setShowTickMarks(true);
         strokeSlider.setShowTickLabels(true);
         fillColorPicker = new ColorPicker();
         strokeColorPicker = new ColorPicker();
 
-        ToggleButton rectangleButton = new ToggleButton("Rectángulo"),
-                    squareButton = new ToggleButton("Cuadrado"),
-                    ellipseButton = new ToggleButton("Elipse"),
-                    circleButton = new ToggleButton("Circulo");
+        ToggleButton rectangleButton = new ToggleButton(RECTANGLE),
+                    squareButton = new ToggleButton(SQUARE),
+                    ellipseButton = new ToggleButton(ELLIPSE),
+                    circleButton = new ToggleButton(CIRCLE);
 
         creatorMap = Map.of(
                 rectangleButton, (startPoint, endPoint) -> new Rectangle(startPoint, endPoint, getCurrentColor(), gc),
@@ -84,30 +103,29 @@ public class ButtonToolBar {
                 deleteButton,
                 enlargeButton,
                 shrinkButton,
-                new Label("Borde"),
+                new Label(BORDER),
                 strokeSlider,
                 strokeColorPicker,
-                new Label("Relleno"),
+                new Label(FILL),
                 fillColorPicker
         };
 
         tools = new ToggleGroup();
         for (Control tool : toolsArr) {
-            tool.setMinWidth(90);
+            tool.setMinWidth(MIN_WIDTH);
             tool.setCursor(Cursor.HAND);
         }
 
         Stream.concat(creatorMap.keySet().stream().map(b -> (ToggleButton) b), Stream.of(selectionButton)).forEach(b -> b.setToggleGroup(tools));
-        toolBox = new VBox(10);
+        toolBox = new VBox(VBOX_SIZE);
         toolBox.getChildren().addAll(toolsArr);
-        toolBox.setPadding(new Insets(5));
-        toolBox.setStyle("-fx-background-color: #999");
-        toolBox.setPrefWidth(100); // TODO: Delete magic numbers
+        toolBox.setPadding(new Insets(PADDING));
+        toolBox.setStyle(BACKGROUND_COLOR);
+        toolBox.setPrefWidth(PREF_WIDTH);
         addEvents();
 
         fillColorPicker.setValue(Color.web(DEFAULT_FILL_COLOR));
         strokeColorPicker.setValue(Color.web(DEFAULT_STROKE_COLOR));
-        strokeSlider.setValue(DEFAULT_STROKE_WEIGHT);
         strokeSlider.addEventFilter(KeyEvent.KEY_PRESSED, Event::consume);
     }
     

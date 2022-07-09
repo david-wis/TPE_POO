@@ -17,14 +17,24 @@ public class ChangesBar {
     private final HBox changesBox;
     private final PaintPane pp;
 
+    // Constantes
+    private static final String UNDO_TEXT = "Deshacer";
+    private static final String REDO_TEXT = "Rehacer";
+    private static final String ZERO = "0";
+    private static final double LABEL_MIN_WIDTH = 300.0;
+    private static final double ACTION_BUTTON_WIDTH = 80.0;
+    private static final double QTY_LABEL_MIN_WIDTH = 20.0;
+    private static final String BACKGROUND_COLOR = "-fx-background-color: #999";
+    private static final double SPACE = 5.0;
+
     public ChangesBar(PaintPane pp){
         this.pp = pp;
-        undoButton = new Button("Deshacer");
-        redoButton = new Button("Rehacer");
+        undoButton = new Button(UNDO_TEXT);
+        redoButton = new Button(REDO_TEXT);
         actionRedoLabel = new Label();
         actionUndoLabel = new Label();
-        qtyRedoChanges = new Label("0");
-        qtyUndoChanges = new Label("0");
+        qtyRedoChanges = new Label(ZERO);
+        qtyUndoChanges = new Label(ZERO);
 
         Control[] changesList = {
                 actionUndoLabel,
@@ -44,26 +54,26 @@ public class ChangesBar {
 
     private void setControlStyles(){
 
-        actionUndoLabel.setMinWidth(300);
+        actionUndoLabel.setMinWidth(LABEL_MIN_WIDTH);
         actionUndoLabel.setAlignment(Pos.CENTER_RIGHT);
 
-        qtyUndoChanges.setMinWidth(20);
+        qtyUndoChanges.setMinWidth(QTY_LABEL_MIN_WIDTH);
         qtyUndoChanges.setAlignment(Pos.CENTER);
 
-        undoButton.setMinWidth(80);
+        undoButton.setMinWidth(ACTION_BUTTON_WIDTH);
 
-        redoButton.setMinWidth(80);
+        redoButton.setMinWidth(ACTION_BUTTON_WIDTH);
 
-        qtyRedoChanges.setMinWidth(20);
+        qtyRedoChanges.setMinWidth(QTY_LABEL_MIN_WIDTH);
         qtyRedoChanges.setAlignment(Pos.CENTER);
 
-        actionRedoLabel.setMinWidth(300);
+        actionRedoLabel.setMinWidth(LABEL_MIN_WIDTH);
         actionRedoLabel.setAlignment(Pos.CENTER_LEFT);
 
-        changesBox.setStyle("-fx-background-color: #999");
-        changesBox.setSpacing(5);
+        changesBox.setStyle(BACKGROUND_COLOR);
+        changesBox.setSpacing(SPACE);
         changesBox.setAlignment(Pos.CENTER);
-        changesBox.setPadding(new Insets(5));
+        changesBox.setPadding(new Insets(SPACE));
     }
 
     public void setChangeLabels(CanvasState.ChangeData changeData) {
