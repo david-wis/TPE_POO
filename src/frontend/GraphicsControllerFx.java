@@ -44,10 +44,10 @@ public class GraphicsControllerFx implements GraphicsController {
     }
 
     @Override
-    public void drawEllipse(Point centerPoint, double sMayorAxis, double sMinorAxis, ColoredFigure.ColorData colorData) {
+    public void drawEllipse(Point centerPoint, double sHorizontalAxis, double sVerticalAxis, ColoredFigure.ColorData colorData) {
         setColors(colorData);
-        gc.strokeOval(centerPoint.getX() - (sMayorAxis / 2), centerPoint.getY() - (sMinorAxis / 2), sMayorAxis, sMinorAxis);
-        gc.fillOval(centerPoint.getX() - (sMayorAxis / 2), centerPoint.getY() - (sMinorAxis / 2), sMayorAxis, sMinorAxis);
+        gc.strokeOval(centerPoint.getX() - (sHorizontalAxis / 2), centerPoint.getY() - (sVerticalAxis / 2), sHorizontalAxis, sVerticalAxis);
+        gc.fillOval(centerPoint.getX() - (sHorizontalAxis / 2), centerPoint.getY() - (sVerticalAxis / 2), sHorizontalAxis, sVerticalAxis);
     }
 
     @Override

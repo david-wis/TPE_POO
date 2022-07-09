@@ -15,11 +15,11 @@ public interface GraphicsController {
     /**
      * Dibuja una elipse
      * @param centerPoint Punto central de la elipse
-     * @param sMayorAxis Eje mayor
-     * @param sMinorAxis Eje menor
+     * @param sHorizontalAxis Eje horizontal
+     * @param sVerticalAxis Eje vertical
      * @param colorData Datos de color de la figura
      */
-    void drawEllipse(Point centerPoint, double sMayorAxis, double sMinorAxis, ColoredFigure.ColorData colorData);
+    void drawEllipse(Point centerPoint, double sHorizontalAxis, double sVerticalAxis, ColoredFigure.ColorData colorData);
 
     /**
      * Dibuja un circulo

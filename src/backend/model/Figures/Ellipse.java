@@ -10,36 +10,24 @@ import backend.model.Point;
  */
 public class Ellipse extends ColoredFigure {
     protected final Point centerPoint;
-    protected double sMayorAxis, sMinorAxis;
+    protected double sHorizontalAxis, sVerticalAxis;
 
-    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis, ColorData colorData, GraphicsController graphicsController) {
+    public Ellipse(Point centerPoint, double sHorizontalAxis, double sVerticalAxis, ColorData colorData, GraphicsController graphicsController) {
         super(colorData, graphicsController);
         this.centerPoint = centerPoint;
-        this.sMayorAxis = sMayorAxis;
-        this.sMinorAxis = sMinorAxis;
+        this.sHorizontalAxis = sHorizontalAxis;
+        this.sVerticalAxis = sVerticalAxis;
     }
 
     @Override
     public String toString() {
-        return String.format("%s [Centro: %s, DMayor: %.2f, DMenor: %.2f]", getName(), centerPoint, sMayorAxis, sMinorAxis);
-    }
-
-    public Point getCenterPoint() {
-        return centerPoint;
-    }
-
-    public double getsMayorAxis() {
-        return sMayorAxis;
-    }
-
-    public double getsMinorAxis() {
-        return sMinorAxis;
+        return String.format("%s [Centro: %s, DHorizontal: %.2f, DVertical: %.2f]", getName(), centerPoint, sHorizontalAxis, sVerticalAxis);
     }
 
     @Override
     public boolean pointBelongs(Point eventPoint) {
-        return ((Math.pow(eventPoint.getX() - centerPoint.getX(), 2) / Math.pow(sMayorAxis, 2)) +
-                (Math.pow(eventPoint.getY() - centerPoint.getY(), 2) / Math.pow(sMinorAxis, 2))) <= 0.30;
+        return ((Math.pow(eventPoint.getX() - centerPoint.getX(), 2) / Math.pow(sHorizontalAxis, 2)) +
+                (Math.pow(eventPoint.getY() - centerPoint.getY(), 2) / Math.pow(sVerticalAxis, 2))) <= 0.30;
     }
 
     @Override
@@ -49,8 +37,8 @@ public class Ellipse extends ColoredFigure {
 
     @Override
     public void resize(double percentage) {
-        sMayorAxis *= (1 + percentage / 100);
-        sMinorAxis *= (1 + percentage / 100);
+        sHorizontalAxis *= (1 + percentage / 100);
+        sVerticalAxis *= (1 + percentage / 100);
     }
 
     @Override
@@ -59,6 +47,6 @@ public class Ellipse extends ColoredFigure {
     }
 
     public void draw(String strokeColor) {
-        graphicsController.drawEllipse(centerPoint, sMayorAxis, sMinorAxis, new ColorData(getFillColor(), strokeColor, getStrokeWeight()));
+        graphicsController.drawEllipse(centerPoint, sHorizontalAxis, sVerticalAxis, new ColorData(getFillColor(), strokeColor, getStrokeWeight()));
     }
 }

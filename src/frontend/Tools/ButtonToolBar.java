@@ -57,7 +57,6 @@ public class ButtonToolBar {
     private static final double MIN_WIDTH = 90.0;
     private static final double VBOX_SIZE = 10.0;
 
-    private static final double PADDING = 5.0;
     private static final String BACKGROUND_COLOR = "-fx-background-color: #999";
     private static final double PREF_WIDTH = 100.0;
     private static final String DEFAULT_FILL_COLOR = "#FF0080";
@@ -94,9 +93,9 @@ public class ButtonToolBar {
                 squareButton , (startPoint, endPoint) -> new Square(startPoint, Math.abs(endPoint.getX() - startPoint.getX()), getCurrentColor(), gc),
                 ellipseButton, (startPoint, endPoint) -> {
                     Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
-                    double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
-                    double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
-                    return new Ellipse(centerPoint, sMayorAxis, sMinorAxis, getCurrentColor(), gc);
+                    double sHorizontalAxis = Math.abs(endPoint.getX() - startPoint.getX());
+                    double sVerticalAxis = Math.abs(endPoint.getY() - startPoint.getY());
+                    return new Ellipse(centerPoint, sHorizontalAxis, sVerticalAxis, getCurrentColor(), gc);
                 },
                 circleButton, (startPoint, endPoint) -> {
                     double circleRadius = startPoint.distanceTo(endPoint);
