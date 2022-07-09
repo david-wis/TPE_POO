@@ -2,7 +2,7 @@ package backend.model.Changes;
 
 import backend.model.ColoredFigure;
 
-public class ShrinkChange extends EnlargeChange {
+public class ShrinkChange extends Change {
 
     public ShrinkChange(ColoredFigure figure) {
         super(figure);
@@ -10,12 +10,12 @@ public class ShrinkChange extends EnlargeChange {
 
     @Override
     public void doChange() {
-        super.undoChange();
+        figure.shrink();
     }
 
     @Override
     public void undoChange() {
-        super.doChange();
+        figure.inverseShrink();
     }
 
     @Override

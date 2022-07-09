@@ -14,7 +14,7 @@ public class EnlargeChange extends Change {
 
     @Override
     public void undoChange() {
-        figure.shrink();
+        figure.inverseEnlarge();
     }
 
     @Override
