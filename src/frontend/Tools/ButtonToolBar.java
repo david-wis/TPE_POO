@@ -14,6 +14,7 @@ import frontend.GraphicsControllerFx;
 import frontend.PaintPane;
 import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -132,6 +133,7 @@ public class ButtonToolBar {
     private void setControlStyles() {
         toolBox.setStyle(BACKGROUND_COLOR);
         toolBox.setPrefWidth(PREF_WIDTH);
+        toolBox.setAlignment(Pos.TOP_CENTER);
         fillColorPicker.setValue(Color.web(DEFAULT_FILL_COLOR));
         strokeColorPicker.setValue(Color.web(DEFAULT_STROKE_COLOR));
         strokeSlider.addEventFilter(KeyEvent.KEY_PRESSED, Event::consume);
