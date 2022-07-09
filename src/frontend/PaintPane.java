@@ -8,6 +8,7 @@ import backend.model.Changes.DeleteChange;
 import frontend.Tools.ButtonToolBar;
 import frontend.Tools.ChangesBar;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -34,7 +35,10 @@ public class PaintPane extends BorderPane {
 	// StatusBar
 	private final StatusPane statusPane;
 
+	// Barra de la izquierda
 	private final ButtonToolBar tb;
+
+	// Barra de la derecha
 	private final ChangesBar cb;
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
@@ -42,13 +46,19 @@ public class PaintPane extends BorderPane {
 		this.statusPane = statusPane;
 		tb = new ButtonToolBar(gc, this);
 		cb = new ChangesBar(this);
+		addEvents();
+		setTop(cb.getChangesBox());
+		setLeft(tb.getToolBox());
+		setRight(canvas);
+	}
 
+	private void addEvents() {
 		canvas.setOnMousePressed(event -> startPoint = new Point(event.getX(), event.getY()));
 
 		canvas.setOnMouseReleased(event -> {
 			Point endPoint = new Point(event.getX(), event.getY());
 			Optional.ofNullable(startPoint).ifPresent(sp -> {
-				if (endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY())	 {
+				if (endPoint.getX() > startPoint.getX() && endPoint.getY() > startPoint.getY())	 {
 					tb.getFigureFromSelectedButton(startPoint, endPoint).ifPresent(figure -> canvasState.addChange(new CreateChange(figure, canvasState)));
 					startPoint = null;
 					redrawCanvas();
@@ -84,9 +94,6 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
-		setTop(cb.getChangesBox());
-		setLeft(tb.getToolBox());
-		setRight(canvas);
 	}
 
 	private void onLastFoundFigure(Point eventPoint, String baseMessage, Consumer<ColoredFigure> figureFoundConsumer, Runnable figureNotFoundRunnable) {
@@ -111,8 +118,18 @@ public class PaintPane extends BorderPane {
 		});
 	}
 
+	public void onSelectedFigurePresentMandatory(Function<ColoredFigure, Change> changeFunction) {
+		onSelectedFigurePresent(changeFunction);
+		if (selectedFigure == null) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("No hay ningun objeto seleccionado");
+			alert.show();
+		}
+	}
+
 	public void deleteSelectedFigure(){
-		onSelectedFigurePresent(figure -> {
+		onSelectedFigurePresentMandatory(figure -> {
 			Change change = new DeleteChange(selectedFigure, canvasState);
 			selectedFigure = null;
 			return change;

@@ -120,8 +120,8 @@ public class ButtonToolBar {
         fillColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new FillColorChange(figure, getCurrentColor())));
         strokeSlider.setOnMouseReleased(event -> pp.onSelectedFigurePresent(figure -> new StrokeWeightChange(figure, getCurrentColor())));
         deleteButton.setOnAction(event -> pp.deleteSelectedFigure());
-        enlargeButton.setOnAction(event -> pp.onSelectedFigurePresent(EnlargeChange::new));
-        shrinkButton.setOnAction(event -> pp.onSelectedFigurePresent(ShrinkChange::new));
+        enlargeButton.setOnAction(event -> pp.onSelectedFigurePresentMandatory(EnlargeChange::new));
+        shrinkButton.setOnAction(event -> pp.onSelectedFigurePresentMandatory(ShrinkChange::new));
     }
 
     public Optional<ColoredFigure> getFigureFromSelectedButton(Point startPoint, Point endPoint) {
