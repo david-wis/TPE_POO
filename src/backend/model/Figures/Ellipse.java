@@ -5,6 +5,9 @@ import backend.model.GraphicsController;
 import backend.model.Point;
 
 
+/**
+ * Representa un elipse dados su punto central, y ejes mayor y menor
+ */
 public class Ellipse extends ColoredFigure {
     protected final Point centerPoint;
     protected double sMayorAxis, sMinorAxis;
@@ -46,8 +49,8 @@ public class Ellipse extends ColoredFigure {
 
     @Override
     public void resize(double percentage) {
-        sMayorAxis *= (1 + percentage/100);
-        sMinorAxis *= (1 + percentage/100);
+        sMayorAxis *= (1 + percentage / 100);
+        sMinorAxis *= (1 + percentage / 100);
     }
 
     @Override

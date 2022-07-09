@@ -8,11 +8,17 @@ public class DeleteChange extends CreateChange {
         super(figure, canvasState);
     }
 
+    /**
+     * Elimina una figura
+     */
     @Override
     public void doChange() {
         super.undoChange();
     }
 
+    /**
+     * Vuelve a dibujar la figura previamente eliminada
+     */
     @Override
     public void undoChange() {
         super.doChange();

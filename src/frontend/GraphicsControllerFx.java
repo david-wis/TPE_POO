@@ -6,6 +6,10 @@ import backend.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+
+/**
+ * Implementacion de GraphicsController para JavaFX
+ */
 public class GraphicsControllerFx implements GraphicsController {
     private final GraphicsContext gc;
     private final static int DEFAULT_LINE_WIDTH = 1;
@@ -15,6 +19,11 @@ public class GraphicsControllerFx implements GraphicsController {
         gc.setLineWidth(DEFAULT_LINE_WIDTH);
     }
 
+    /**
+     * Limpia el canvas
+     * @param width Ancho del canvas
+     * @param height Alto del canvas
+     */
     public void clear(double width, double height) {
         gc.clearRect(0, 0, width, height);
     }

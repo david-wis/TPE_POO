@@ -7,7 +7,6 @@ public abstract class ColoredFigure extends Figure {
         super(graphicsController);
         this.colorData = colorData;
     }
-
     public String getFillColor() { return colorData.fillColor; }
 
     public double getStrokeWeight() { return colorData.strokeWeight; }

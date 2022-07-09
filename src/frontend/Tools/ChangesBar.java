@@ -7,6 +7,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
+/**
+ * Barra para hacer y deshacer cambios
+ */
 public class ChangesBar {
     private final Button redoButton;
     private final Button undoButton;
@@ -52,8 +55,10 @@ public class ChangesBar {
         addEvents();
     }
 
+    /**
+     * Carga los estilos de los controles
+     */
     private void setControlStyles(){
-
         actionUndoLabel.setMinWidth(LABEL_MIN_WIDTH);
         actionUndoLabel.setAlignment(Pos.CENTER_RIGHT);
 
@@ -76,20 +81,32 @@ public class ChangesBar {
         changesBox.setPadding(new Insets(SPACE));
     }
 
+    /**
+     * Carga el texto de los labels de cambios
+     * @param changeData estructura con informacion sobre cantidad de cambios y sus descripciones
+     */
     public void setChangeLabels(CanvasState.ChangeData changeData) {
         actionUndoLabel.setText(changeData.getUndoChange());
         actionRedoLabel.setText(changeData.getRedoChange());
         qtyUndoChanges.setText(Integer.toString(changeData.getUndoQty()));
         qtyRedoChanges.setText(Integer.toString(changeData.getRedoQty()));
+
+        // Desactivar los botones si no hay cambios para atras o para adelante
         undoButton.setDisable(changeData.getUndoQty() == 0);
         redoButton.setDisable(changeData.getRedoQty() == 0);
     }
 
+    /**
+     * Agrega los handlers a los botones de rehacer y deshacer
+     */
     private void addEvents() {
        redoButton.setOnAction(event -> pp.redoChange());
        undoButton.setOnAction(event -> pp.undoChange());
     }
 
+    /**
+     * @return HBox con controles
+     */
     public HBox getChangesBox(){
         return changesBox;
     }

@@ -4,6 +4,10 @@ import backend.model.ColoredFigure;
 import backend.model.GraphicsController;
 import backend.model.Point;
 
+
+/**
+ * Representa un rectángulo dadas su la esquina izquierda superior y derecha inferior.
+ */
 public class Rectangle extends ColoredFigure {
     protected final Point topLeft, bottomRight;
 

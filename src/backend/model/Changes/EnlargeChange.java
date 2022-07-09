@@ -7,11 +7,17 @@ public class EnlargeChange extends Change {
         super(figure);
     }
 
+    /**
+     * Agranda una figura
+     */
     @Override
     public void doChange() {
         figure.enlarge();
     }
 
+    /**
+     * Achica la figura previamente agrandada
+     */
     @Override
     public void undoChange() {
         figure.inverseEnlarge();

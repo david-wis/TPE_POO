@@ -25,6 +25,9 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
+/**
+ * Barra de seleccion, borrado, colores, creacion de figuras y trazo
+ */
 public class ButtonToolBar {
     private final ToggleButton selectionButton;
     private final Button deleteButton;
@@ -50,6 +53,7 @@ public class ButtonToolBar {
     private static final String FILL = "Relleno";
     private static final double MIN_WIDTH = 90.0;
     private static final double VBOX_SIZE = 10.0;
+
     private static final double PADDING = 5.0;
     private static final String BACKGROUND_COLOR = "-fx-background-color: #999";
     private static final double PREF_WIDTH = 100.0;
@@ -59,7 +63,7 @@ public class ButtonToolBar {
     private static final double MAX_STROKE_WEIGHT = 50.0;
     private static final double DEFAULT_STROKE_WEIGHT = 3.0;
 
-
+    // Mapea un boton con la funcion para crear las figuras que crea
     private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
 
     public ButtonToolBar(GraphicsControllerFx gc, PaintPane pp) {
@@ -115,24 +119,34 @@ public class ButtonToolBar {
             tool.setMinWidth(MIN_WIDTH);
             tool.setCursor(Cursor.HAND);
         }
-
         Stream.concat(creatorMap.keySet().stream().map(b -> (ToggleButton) b), Stream.of(selectionButton)).forEach(b -> b.setToggleGroup(tools));
         toolBox = new VBox(VBOX_SIZE);
         toolBox.getChildren().addAll(toolsArr);
-        toolBox.setPadding(new Insets(PADDING));
+        setControlStyles();
+        addEvents();
+    }
+
+    /**
+     * Setea los estilos de los controles
+     */
+    private void setControlStyles() {
         toolBox.setStyle(BACKGROUND_COLOR);
         toolBox.setPrefWidth(PREF_WIDTH);
-        addEvents();
-
         fillColorPicker.setValue(Color.web(DEFAULT_FILL_COLOR));
         strokeColorPicker.setValue(Color.web(DEFAULT_STROKE_COLOR));
         strokeSlider.addEventFilter(KeyEvent.KEY_PRESSED, Event::consume);
     }
-    
+
+    /**
+     * @return Color que actualmente tiene el slider
+     */
     public ColoredFigure.ColorData getCurrentColor() {
         return new ColoredFigure.ColorData(fillColorPicker.getValue().toString(), strokeColorPicker.getValue().toString(), strokeSlider.getValue());
     }
 
+    /**
+     * Agrega los handlers a los controles
+     */
     private void addEvents() {
         strokeColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new StrokeColorChange(figure, getCurrentColor())));
         fillColorPicker.setOnAction(event -> pp.onSelectedFigurePresent(figure -> new FillColorChange(figure, getCurrentColor())));
@@ -142,22 +156,39 @@ public class ButtonToolBar {
         shrinkButton.setOnAction(event -> pp.onSelectedFigurePresentMandatory(ShrinkChange::new));
     }
 
+
+    /**
+     * @param startPoint Punto inicial
+     * @param endPoint Punto final
+     * @return Una ColoredFigure si hay un boton de creacion seleccionado
+     */
     public Optional<ColoredFigure> getFigureFromSelectedButton(Point startPoint, Point endPoint) {
         if (tools.getSelectedToggle() != null)
-            return Optional.ofNullable(creatorMap.getOrDefault(tools.getSelectedToggle(), (sp, ep) -> null).apply(startPoint, endPoint));
+            return Optional.ofNullable(creatorMap.getOrDefault(tools.getSelectedToggle(), (start, end) -> null).apply(startPoint, endPoint));
         return Optional.empty();
     }
 
+    /**
+     * @return VBox con controles
+     */
     public VBox getToolBox() {
         return toolBox;
     }
 
+
+    /**
+     * Carga los colores y el grosor del trazo en los controles
+     * @param colorData Datos a cargar en el slider y los colorpickers
+     */
     public void setColorData(ColoredFigure.ColorData colorData) {
         strokeSlider.setValue(colorData.getStrokeWeight());
         fillColorPicker.setValue(Color.web(colorData.getFillColor()));
         strokeColorPicker.setValue(Color.web(colorData.getStrokeColor()));
     }
 
+    /**
+     * @return Si el boton de seleccionar esta presionado
+     */
     public boolean isSelecting() {
         return selectionButton.isSelected();
     }

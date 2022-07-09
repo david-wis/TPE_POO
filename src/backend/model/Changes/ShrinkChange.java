@@ -8,11 +8,17 @@ public class ShrinkChange extends Change {
         super(figure);
     }
 
+    /**
+     * Achica una figura
+     */
     @Override
     public void doChange() {
         figure.shrink();
     }
 
+    /**
+     * Agranda una figura previamente achicada
+     */
     @Override
     public void undoChange() {
         figure.inverseShrink();

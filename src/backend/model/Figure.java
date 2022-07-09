@@ -1,5 +1,8 @@
 package backend.model;
 
+/**
+ *
+ */
 public abstract class Figure implements Movable, Resizable {
     protected final GraphicsController graphicsController;
     public Figure(GraphicsController graphicsController) {
