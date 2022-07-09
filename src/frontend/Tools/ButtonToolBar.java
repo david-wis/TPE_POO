@@ -38,6 +38,8 @@ public class ButtonToolBar {
     private final ColorPicker fillColorPicker;
     private final ColorPicker strokeColorPicker;
     private final VBox toolBox;
+
+    //private final VBox colorDataBox;
     private final ToggleGroup tools;
     private final PaintPane pp;
 
@@ -63,6 +65,9 @@ public class ButtonToolBar {
     private static final double MIN_STROKE_WEIGHT = 1.0;
     private static final double MAX_STROKE_WEIGHT = 50.0;
     private static final double DEFAULT_STROKE_WEIGHT = 3.0;
+
+    private static final double INSETS = 5.0;
+
 
     // Mapea un boton con la funcion para crear las figuras que crea
     private final Map<Toggle, BiFunction<Point, Point, ColoredFigure>> creatorMap;
@@ -113,8 +118,8 @@ public class ButtonToolBar {
                 strokeColorPicker,
                 new Label(FILL),
                 fillColorPicker
+                
         };
-
         tools = new ToggleGroup();
         for (Control tool : toolsArr) {
             tool.setMinWidth(MIN_WIDTH);
@@ -134,6 +139,8 @@ public class ButtonToolBar {
         toolBox.setStyle(BACKGROUND_COLOR);
         toolBox.setPrefWidth(PREF_WIDTH);
         toolBox.setAlignment(Pos.TOP_CENTER);
+        VBox.setMargin(fillColorPicker, new Insets(0, INSETS, 0, INSETS));
+        VBox.setMargin(strokeColorPicker, new Insets(0, INSETS, 0, INSETS));
         fillColorPicker.setValue(Color.web(DEFAULT_FILL_COLOR));
         strokeColorPicker.setValue(Color.web(DEFAULT_STROKE_COLOR));
         strokeSlider.addEventFilter(KeyEvent.KEY_PRESSED, Event::consume);
