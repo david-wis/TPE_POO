@@ -1,5 +1,8 @@
 package backend.model;
 
+/**
+ * Figura con color
+ */
 public abstract class ColoredFigure extends Figure {
     private ColorData colorData;
 
@@ -23,12 +26,22 @@ public abstract class ColoredFigure extends Figure {
         return colorData;
     }
 
+    @Override
     public void draw() {
         draw(colorData.strokeColor);
     }
 
+
+    /**
+     * Dibuja la figura con el color del trazo recibido
+     * @param strokeColor Color del trazo
+     */
     public abstract void draw(String strokeColor);
 
+
+    /**
+     * Estructura inmutable que encapsula la informacion acerca del trazo y el relleno
+     */
     public static class ColorData {
         private final String fillColor, strokeColor;
         private final double strokeWeight;

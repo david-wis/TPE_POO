@@ -39,7 +39,6 @@ public class ButtonToolBar {
     private final ColorPicker strokeColorPicker;
     private final VBox toolBox;
 
-    //private final VBox colorDataBox;
     private final ToggleGroup tools;
     private final PaintPane pp;
 

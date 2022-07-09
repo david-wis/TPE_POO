@@ -28,6 +28,11 @@ public class GraphicsControllerFx implements GraphicsController {
         gc.clearRect(0, 0, width, height);
     }
 
+
+    /**
+     * Asigna el color de relleno, color y grosor del trazo a la siguiente figura a dibujar
+     * @param colorData Informacion del relleno y grosor a asignar
+     */
     private void setColors(ColoredFigure.ColorData colorData){
         gc.setStroke(Color.web(colorData.getStrokeColor()));
         gc.setLineWidth(colorData.getStrokeWeight());

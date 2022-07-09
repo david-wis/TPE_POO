@@ -28,6 +28,11 @@ public class Point implements Movable {
         y += dy;
     }
 
+
+    /**
+     * @param target el punto objetivo
+     * @return distancia al punto objetivo
+     */
     public double distanceTo(Point target){
         return Math.sqrt(Math.pow(x - target.x, 2) +
                 Math.pow(y - target.y, 2));
