@@ -6,7 +6,7 @@ import backend.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class GraphicsControllerFx extends GraphicsController {
+public class GraphicsControllerFx implements GraphicsController {
     private final GraphicsContext gc;
     private final static int DEFAULT_LINE_WIDTH = 1;
 
