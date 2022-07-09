@@ -134,10 +134,10 @@ public class ButtonToolBar {
         return toolBox;
     }
 
-    public void setFigureData(ColoredFigure figure) {
-        strokeSlider.setValue(figure.getStrokeWeight());
-        fillColorPicker.setValue(Color.web(figure.getFillColor()));
-        strokeColorPicker.setValue(Color.web(figure.getStrokeColor()));
+    public void setColorData(ColoredFigure.ColorData colorData) {
+        strokeSlider.setValue(colorData.getStrokeWeight());
+        fillColorPicker.setValue(Color.web(colorData.getFillColor()));
+        strokeColorPicker.setValue(Color.web(colorData.getStrokeColor()));
     }
 
     public boolean isSelecting() {

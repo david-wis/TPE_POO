@@ -75,7 +75,7 @@ public class PaintPane extends BorderPane {
 			if(tb.isSelecting()) {
 				onLastFoundFigure(new Point(event.getX(), event.getY()), "Se seleccionó: ", (figure) -> {
 					selectedFigure = figure;
-					tb.setFigureData(selectedFigure);
+					tb.setColorData(selectedFigure.getColorData());
 				}, () -> {
 					selectedFigure = null;
 					statusPane.updateStatus("Ninguna figura encontrada");
