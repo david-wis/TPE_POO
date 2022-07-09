@@ -119,13 +119,14 @@ public class PaintPane extends BorderPane {
 	}
 
 	public void onSelectedFigurePresentMandatory(Function<ColoredFigure, Change> changeFunction) {
-		onSelectedFigurePresent(changeFunction);
 		if (selectedFigure == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("No hay ningun objeto seleccionado");
 			alert.show();
+			return;
 		}
+		onSelectedFigurePresent(changeFunction);
 	}
 
 	public void deleteSelectedFigure(){
