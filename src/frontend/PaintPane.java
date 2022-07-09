@@ -144,11 +144,13 @@ public class PaintPane extends BorderPane {
 	}
 
 	public void redoChange() {
+		selectedFigure = null;
 		canvasState.redoChange();
 		redrawCanvas();
 	}
 
 	public void undoChange() {
+		selectedFigure = null;
 		canvasState.undoChange();
 		redrawCanvas();
 	}
